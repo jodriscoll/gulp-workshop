@@ -1,5 +1,5 @@
 /*
-  # gulp api
+  # gulp api notes from presentation
     - gulp.task creats a new task
       it requires to return either a Stream, a Promise, or an Observable
     - gulp.src "globs" files and returns a stream of virtual file objects
@@ -7,10 +7,12 @@
     - gulp.dest saves the file back to the file system
     - const are npm requirements while gulp is running (stored within node_modules/)
     - the second parameter of gulp.task is always a function
+
     - gulp.series is a task function that runs tasks in sequential order.
     - gulp.parallel is task function that starts every task concurrently
     - Both task functions accept task names and other functions as parameters
       the can be combined infinitely
+
     - gulp.watch creates a file watchers and listens to changes
     - changes include 'change', 'add', 'unlink' and others
     - GrowserSync is a development tool that can be fully integrated in Gulp
@@ -66,10 +68,7 @@ gulp.task('styles', () => {
     .pipe(cssmin())
     .pipe(concat('style.min.css'))
     .pipe(gulp.dest('dist/styles'))
-    .pipe(bsync.stream());                                                      // will inject the new version into the browser (css only)
-    // .pipe(browserSync.stream(browserSync.reload), (done) => {
-    //   done();
-    // })
+    .pipe(bsync.stream());
 });
 
 gulp.task('server', (done) => {
@@ -81,17 +80,6 @@ gulp.task('server', (done) => {
   });
   done();
 })
-
-// when the default task is executed, parallel additional gulp tasks previously defined
-// $ gulp
-// gulp.task('default', gulp.parallel(
-//   'styles',
-//   gulp.series('lint', 'scripts', (done) => {
-//     // when lint and scripts have completed, alert the console of the completion
-//     console.log('\u2713 JavaScript Series Completed!');
-//     // nothing to return here; telling gulp that after this execution above, the whole thing is "done"
-//     done();
-//   })));
 
 gulp.task('default', gulp.series('clean',
   gulp.parallel('styles', 'scripts'), 'server', (done) => {

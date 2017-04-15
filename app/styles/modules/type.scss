@@ -12,11 +12,12 @@ address { margin: 0 0 1.5em; }
 pre {
   background: $color__background-pre;
   font-family: $font__pre;
+  font-size: 10px;
   margin-bottom: 1.6em;
   max-width: 100%;
   overflow: auto;
   padding: 1.6em;
-  // @include font-size(16, 24);
+  // @include font-size(16, 24)
 }
 
 code, kbd, tt, var {
@@ -35,3 +36,8 @@ mark, ins {
 }
 
 big { font-size: 125%; }
+
+small {
+  font-weight: 500;
+  font-size: 16px;
+}

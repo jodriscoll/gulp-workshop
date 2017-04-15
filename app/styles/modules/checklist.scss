@@ -3,15 +3,38 @@ ul {
   margin-bottom: 0;
   padding-left: 0;
   li {
-    background-color: white;
-    border: 1px solid lightgrey;
+    background-color: #fcf8e3;
+    border: 1px solid #a6a498;
     font-size: 16px;
-    padding: 30px 15px;
+    text-align: center;
+    label {
+      border-left: 1px solid $color__background-elements;
+      display: inline-block;
+      height: 100%;
+      padding: 30px 15px;
+      text-align: left;
+      width: calc(700px - 30px - 18px - 32px);
+    }
+    &:first-of-type {
+      border-bottom: none;
+    }
   }
 }
 
+input[type='checkbox'] {
+  display: inline-block;
+  float: left;
+  height: 18px;
+  margin: 30px 16px;
+  width: 15px;
+}
+
 input[type='text'] {
+  border: 1px solid $color__background-elements;
+  border-radius: 0 0 10px 10px;
+  border-top: none;
   box-sizing: border-box;
+  float: right;
   padding: 12px;
   width: 100%;
 }

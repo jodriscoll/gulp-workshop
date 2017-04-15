@@ -9,8 +9,12 @@
     - the second parameter of gulp.task is always a function
     - gulp.series is a task function that runs tasks in sequential order.
     - gulp.parallel is task function that starts every task concurrently
-    - both task functions accept task names and other functions as parameters
-    - the can be combined infinitely...
+    - Both task functions accept task names and other functions as parameters
+      the can be combined infinitely
+    - gulp.watch creates a file watchers and listens to changes
+    - changes include 'change', 'add', 'unlink' and others
+    - GrowserSync is a development tool that can be fully integrated in Gulp
+    - Watchers trigger a browserSync.reload call
 **/
 
 // constant requirements
@@ -37,7 +41,7 @@ gulp.task('lint', () => {
   // *.js     = all files with the file type of .js
   // **/      = all files within any directory
   // !app/**  = ignore files/directories meeting wildcard placements
-  return gulp.src(['app/scripts/**/*.js', '!app/scripts/vendor/**/*.js'])             // first glob everything, then throw away what you don't need
+  return gulp.src(['app/scripts/**/*.js', '!app/scripts/vendor/*.js'])                // first glob everything, then throw away what you don't need
     .pipe(jshint())                                                                   // jshint alters virtual file contents
     .pipe(jshint.reporter('default'))                                                 // report if we've wrote good/bad javascript
     .pipe(jshint.reporter('fail'));                                                   // fail if we haven't done so
@@ -51,7 +55,8 @@ gulp.task('scripts', gulp.series('lint', () => {
   return gulp.src('app/scripts/**/*.js')
     .pipe(uglify())
     .pipe(concat('main.min.js'))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('dist/scripts'))
+    .pipe(bsync.stream());                                                      // will reload the browser and load the new version (javascript)
 }));
 
 // run the css task pipeline
@@ -60,7 +65,11 @@ gulp.task('styles', () => {
     .pipe(sass())
     .pipe(cssmin())
     .pipe(concat('style.min.css'))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('dist/styles'))
+    .pipe(bsync.stream());                                                      // will inject the new version into the browser (css only)
+    // .pipe(browserSync.stream(browserSync.reload), (done) => {
+    //   done();
+    // })
 });
 
 gulp.task('server', (done) => {
@@ -88,7 +97,6 @@ gulp.task('default', gulp.series('clean',
   gulp.parallel('styles', 'scripts'), 'server', (done) => {
     gulp.watch('app/styles/**.scss', gulp.parallel('styles'));
     gulp.watch('app/scripts/**.js', gulp.parallel('lint', 'scripts'));
-    gulp.watch('dist/**/*', bsync.reload);
     done();
   }
 ));

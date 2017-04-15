@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Gulp</title>
+    <link rel="stylesheet" href="styles/main.css">
+  </head>
+  <body>
+    <section id="how-to">
+      <small>set up gulp CLI and dev gulp 4.0</small>
+      <pre>
+        # uninstall previous gulp installation and related packages (if applicable)
+        $ npm rm gulp -g
+        $ npm rm gulp-cli -g
+        $ cd your-project-dir/
+        $ npm rm gulp --save-dev
+        $ npm rm gulp --save
+        $ npm rm gulp --save-optional
+        $ npm cache clean
+
+        # install the latest gulp cli tools (globally)
+        $ npm install gulpjs/gulp-cli -g
+
+        # install gulp 4 into your project from 4.0 gitHub branch as dev dependency
+        $ npm install gulpjs/gulp#4.0 --save-dev
+
+        # check the versions installed – verify versions are not lower than below
+        $ gulp -v
+        ---
+        [13:48:36] CLI version 1.2.2
+        [13:48:36] Local version 4.0.0-alpha.2
+      </pre>
+      <small>set up gulp project (specific) file</small>
+      <pre>
+        touch gulpfile.js
+      </pre>
+    </section>
+
+    <section>
+      <h1>Heading</h1>
+      <p>This is a gulp sample project.</p>
+      <ul id="to-do-list">
+        <li>
+          <input id="cb1" type="checkbox">
+          <label for="cb1">To do item 1</label>
+        </li>
+        <li>
+          <input id="cb2" type="checkbox">
+          <label for="cb2">To do item 2</label>
+        </li>
+      </ul>
+      <form>
+        <input id="to-do-add" type="text" placeholder="Enter an item and press Enter">
+      </form>
+    </section>
+    <script src="scripts/vendor/jquery.js"></script>
+    <script src="scripts/main.js"></script>
+  </body>
+</html>

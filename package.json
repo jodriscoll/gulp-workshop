@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jodriscoll/gulp-workshop/blob/master/README.md"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,7 +16,7 @@
     "browser-sync": "^2.9.12",
     "browserify": "^12.0.1",
     "del": "^2.0.2",
-    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp": "gulpjs/gulp#4.0",
     "gulp-cached": "^1.1.0",
     "gulp-clean-css": "^3.0.0",
     "gulp-concat": "^2.6.0",

@@ -11,6 +11,8 @@ address { margin: 0 0 1.5em; }
 
 pre {
   background: $color__background-pre;
+  border: 1px dotted $color__text-screen;
+  border-radius: 5px;
   font-family: $font__pre;
   font-size: 10px;
   margin-bottom: 1.6em;

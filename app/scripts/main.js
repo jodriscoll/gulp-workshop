@@ -17,4 +17,4 @@ $('form').on('submit', function(e) {
   return false;
 });
 
-// confirm('javascript has been changed');
+// confirm('javascript has been changed!');

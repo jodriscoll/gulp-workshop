@@ -16,3 +16,5 @@ $('form').on('submit', function(e) {
   $('#to-do-add').val('');
   return false;
 });
+
+// confirm('javascript has been changed');

@@ -3,11 +3,12 @@
   <head>
     <meta charset="utf-8">
     <title>Gulp</title>
-    <link rel="stylesheet" href="/style.min.css">
+    <link rel="stylesheet" href="/styles/style.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
   </head>
   <body>
     <section id="how-to">
-      <small>set up gulp CLI and dev gulp 4.0</small>
+      <h1>set up gulp CLI and dev gulp 4.0</h1>
       <pre>
 # uninstall previous gulp installation and related packages (if applicable)
 # to avoid sudo spam, prefix npm with sudo if you're not executing as root
@@ -30,7 +31,7 @@ $ gulp -v
 ---
 [13:48:36] CLI version 1.2.2
 [13:48:36] Local version 4.0.0-alpha.2</pre>
-      <small>set up gulp project (specific) file</small>
+      <h2>set up gulp project (specific) file</h2>
       <pre>$ touch gulpfile.js</pre>
     </section>
 
@@ -39,11 +40,11 @@ $ gulp -v
       <p>automating with gulp can be fun when working with something as simple as a to-do app, all the way to a complex angular/react web app.</p>
       <ul id="to-do-list">
         <li>
-          <input id="cb1" type="checkbox">
+          <input type="checkbox" id="cb1">
           <label for="cb1">To do item 1</label>
         </li>
         <li>
-          <input id="cb2" type="checkbox">
+          <input type="checkbox" id="cb2">
           <label for="cb2">To do item 2</label>
         </li>
       </ul>
@@ -51,7 +52,7 @@ $ gulp -v
         <input id="to-do-add" type="text" placeholder="Enter an item and press Enter">
       </form>
     </section>
-    <script src="scripts/vendor/jquery.js"></script>
-    <script src="/main.min.js"></script>
+    <script src="/scripts/vendor/jquery.js"></script>
+    <script src="scripts/main.min.js"></script>
   </body>
 </html>

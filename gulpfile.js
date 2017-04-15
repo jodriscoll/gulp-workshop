@@ -41,10 +41,10 @@ gulp.task('lint', () => {
   // *.js     = all files with the file type of .js
   // **/      = all files within any directory
   // !app/**  = ignore files/directories meeting wildcard placements
-  return gulp.src(['app/scripts/**/*.js', '!app/scripts/vendor/*.js'])                // first glob everything, then throw away what you don't need
-    .pipe(jshint())                                                                   // jshint alters virtual file contents
-    .pipe(jshint.reporter('default'))                                                 // report if we've wrote good/bad javascript
-    .pipe(jshint.reporter('fail'));                                                   // fail if we haven't done so
+  return gulp.src(['app/scripts/**/*.js', '!app/scripts/vendor/*.js'])          // first glob everything, then throw away what you don't need
+    .pipe(jshint())                                                             // jshint alters virtual file contents
+    .pipe(jshint.reporter('default'))                                           // report if we've wrote good/bad javascript
+    .pipe(jshint.reporter('fail'));                                             // fail if we haven't done so
 });
 
 // run the javascript task pipeline
@@ -97,6 +97,7 @@ gulp.task('default', gulp.series('clean',
   gulp.parallel('styles', 'scripts'), 'server', (done) => {
     gulp.watch('app/styles/**.scss', gulp.parallel('styles'));
     gulp.watch('app/scripts/**.js', gulp.parallel('lint', 'scripts'));
+    gulp.watch('app/*.html').on('change', bsync.reload);
     done();
   }
 ));

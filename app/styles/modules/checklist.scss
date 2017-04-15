@@ -3,12 +3,12 @@ ul {
   margin-bottom: 0;
   padding-left: 0;
   li {
-    background-color: #fcf8e3;
-    border: 1px solid #a6a498;
+    background-color: $color__background-pre;
+    border: 1px solid $color__border-elements;
     font-size: 16px;
     text-align: center;
     label {
-      border-left: 1px solid $color__background-elements;
+      border-left: 1px solid $color__border-elements;
       display: inline-block;
       height: 100%;
       padding: 30px 15px;
@@ -30,7 +30,7 @@ input[type='checkbox'] {
 }
 
 input[type='text'] {
-  border: 1px solid $color__background-elements;
+  border: 1px solid $color__border-elements;
   border-radius: 0 0 10px 10px;
   border-top: none;
   box-sizing: border-box;

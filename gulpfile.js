@@ -1,5 +1,23 @@
 /*
-  # gulp api notes from presentation
+  # why Gulp.js and not another build tool such as, [Java]ant, [Require]grunt,
+    [Amber]brocolli, or [React]webpack?
+    "with every new technology comes a new build tool"
+    gulp obtained its extraction from the Agunlar.js community because they were
+    able to do a lot of operations sequentially without saving files or dealing
+    with intermediates.
+    For example, React.js and webpack is a tool for React.js because it deals
+    with lots of issues they "think" gulp can't handle.
+    My recommendation is to research the community of the technology you're
+    working with, then decide with build tool best suites the need of your
+    project – personal, I'm baise to Gulp :)
+    Why? Gulp composition is simple. You can read and write a configuration file
+    with little experience into ECMA6 or JavaScript experience. It also, with
+    some "light" massaging works with both docker images and dev containers
+    without the infamous "gulp remotes false issues when working remote" issue.
+    And, I personally think you can acheive anything you can with the other
+    build tools using gulp.
+
+  # gulp api notes for presentation ============================================
     - gulp.task creats a new task
       it requires to return either a Stream, a Promise, or an Observable
     - gulp.src "globs" files and returns a stream of virtual file objects
@@ -33,17 +51,18 @@
 **/
 
 // constant requirements
-const gulp      = require('gulp');
-const uglify    = require('gulp-uglify');
-const concat    = require('gulp-concat');
-const sass      = require('gulp-sass');
-const cssmin    = require('gulp-clean-css');
-const jshint    = require('gulp-jshint');
-const del       = require('del');
-const bsync     = require('browser-sync');
-const newer     = require('gulp-newer');
-const cached    = require('gulp-cached');
-const remember  = require('gulp-remember');
+const gulp        = require('gulp');
+const uglify      = require('gulp-uglify');
+const concat      = require('gulp-concat');
+const sass        = require('gulp-sass');
+const cssmin      = require('gulp-clean-css');
+const jshint      = require('gulp-jshint');
+const del         = require('del');
+const bsync       = require('browser-sync');
+const newer       = require('gulp-newer');
+const cached      = require('gulp-cached');
+const remember    = require('gulp-remember');
+const sourcemaps  = require('gulp-sourcemaps');
 
 
 // gulp default task and standard function through ECMA6
@@ -54,19 +73,14 @@ const remember  = require('gulp-remember');
 // bsync.stream   = stream in new versions of files (.img, .scss)
 
 gulp.task('clean', () => {
-  // del module is the most direct way to manage files within node
-  return del('dist/**/*');
+  return del('dist/**/*');                                                      // del module is the most direct way to manage files within node
 });
 
 
 // javascript validator (not overly strict)
 gulp.task('lint', () => {
-  // *.js     = all files with the file type of .js
-  // **/      = all files within any directory
-  // !app/**  = ignore files/directories meeting wildcard placements
   return gulp.src(
     ['app/scripts/**/*.js', '!app/scripts/vendor/*.js'], {
-      // only lint files sint the last time lint has been run
       since: gulp.lastRun('lint')
     })
     .pipe(jshint())                                                             // jshint alters virtual file contents
@@ -76,14 +90,13 @@ gulp.task('lint', () => {
 
 // start the javascript task pipeline
 gulp.task('scripts', gulp.series('lint', () => {
-  // **/*     = gulp adds everything (including folders) captured in the wildcard
-  //            during .dest()
-  //            * note: .concat() breaks this catch-all
-  return gulp.src('app/scripts/**/*.js')
+  return gulp.src(['app/scripts/vendor/*.js', 'app/scripts/*.js'])
+    .pipe(sourcemaps.init())
     .pipe(cached('scripts'))
     .pipe(uglify())
     .pipe(remember('scripts'))
     .pipe(concat('main.min.js'))
+    .pipe(sourcemaps.write('.'))                                               // write the sourece map to the proceeding dest location
     .pipe(gulp.dest('dist/scripts'))
     .pipe(bsync.stream());                                                      // will reload the browser and load the new version (javascript)
 }));
@@ -91,6 +104,7 @@ gulp.task('scripts', gulp.series('lint', () => {
 // start the css task pipeline
 gulp.task('styles', () => {
   return gulp.src('app/styles/main.scss')
+    .pipe(sourcemaps.init())
     .pipe(sass())
     .pipe(cssmin())
     .pipe(remember('styles'))
@@ -110,7 +124,6 @@ gulp.task('html', () => {
 gulp.task('server', (done) => {
   bsync({
     server: {
-      // browsersync set up to start a dev server, serving dist/
       baseDir: ['dist']                                                         // will 404 if nothing found
     }
   });

@@ -1,0 +1,17 @@
+ul {
+  list-style: none;
+  margin-bottom: 0;
+  padding-left: 0;
+  li {
+    background-color: white;
+    border: 1px solid lightgrey;
+    font-size: 16px;
+    padding: 30px 15px;
+  }
+}
+
+input[type='text'] {
+  box-sizing: border-box;
+  padding: 12px;
+  width: 100%;
+}

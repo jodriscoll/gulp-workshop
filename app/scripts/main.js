@@ -16,5 +16,3 @@ $('form').on('submit', function(e) {
   $('#to-do-add').val('');
   return false;
 });
-
-console.log('Hello World');

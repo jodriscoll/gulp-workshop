@@ -1,4 +1,4 @@
-$bgColor:     hotpink;//#2ecc71;
+$bgColor:     white;
 $fontColor:   #ecf0f1;
 $border:      rgb(100,100,100);
 
@@ -7,7 +7,7 @@ $font__main--bold: "Helvetica Neue Bold", Arial, sans-serif;
 $font__main--light: "Helvetica Neue Light", Arial, sans-serif;
 
 $font__code: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
-$font__pre: "Courier 10 Pitch", Courier, monospace;
+$font__pre: "Monaco", Courier, monospace;
 
 $font__line-height-body: 1.5;
 $font__line-height-pre: 1.6;
@@ -26,19 +26,3 @@ $color__border-abbr: #666;
 $color__text-screen: #21759b;
 $color__text-input: #666;
 $color__text-input-focus: #111;
-
-// environment specific colors
-$color--aa: #000000;                // style guide color 1
-$color--ab: #000000;                // style guide color 2
-$color--ac: #000000;                // style guide color 3
-$color--ad: #000000;                // style guide color 4
-$color--ae: #000000;                // style guide color 5
-$color--af: #000000;                // style guide color 6
-
-// none style guide colors
-$color--ba: #000000;                // none style guide color 1
-$color--bb: #000000;                // none style guide color 2
-$color--bc: #000000;                // none style guide color 3
-$color--bd: #000000;                // none style guide color 4
-$color--be: #000000;                // none style guide color 5
-$color--bf: #000000;                // none style guide color 6

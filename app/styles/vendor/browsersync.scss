@@ -1,0 +1,22 @@
+// inline style overrides for gulp-browsersync notifications.
+// you will be requires to use !important where you're overrides the defaults
+// for added support, defaults that are not overwritten are commented out
+
+// div#__bs_notify__ {
+div[id*='bs_notify'] {
+  background-color: #024d2d !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 10px;
+  color: white !important;
+  // display: block;
+  font-family: 'Raleway', Arial, sans-serif !important;
+  font-size: 18px !important;
+  left: 0;
+  margin: 0 !important;
+  padding: 24px !important;
+  // position: fixed;
+  right: initial !important;
+  // text-align: center;
+  top: 0 !important;
+  // z-index: 9999;
+}

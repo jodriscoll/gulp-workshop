@@ -5,10 +5,11 @@ ul {
   li {
     background-color: $color__background-pre;
     border: 1px solid $color__border-elements;
+    border-bottom: 0;
     font-size: 16px;
     text-align: center;
-    &:first-of-type {
-      border-bottom: none;
+    &:last-of-type {
+      border-bottom: 1px solid $color__border-elements;
     }
     input {
       &:checked {

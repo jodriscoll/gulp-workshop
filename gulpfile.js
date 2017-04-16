@@ -65,19 +65,30 @@ const remember    = require('gulp-remember');
 const sourcemaps  = require('gulp-sourcemaps');
 
 
-// gulp default task and standard function through ECMA6
-// gulp.task('default', () => {} );
+/*
+  gulp default task and standard function through ECMA6
+  gulp.task('default', () => {} );
+*/
 
-// browsersync triggers
-// bsync.reload   = reload the web app (.js, .html)
-// bsync.stream   = stream in new versions of files (.img, .scss)
+/*
+  browsersync triggers
+  bsync.reload   = reload the web app (.js, .html)
+  bsync.stream   = stream in new versions of files (.img, .scss)
+*/
 
+// create a new task that deletes directories/files
 gulp.task('clean', () => {
-  return del('dist/**/*');                                                      // del module is the most direct way to manage files within node
+  return del('dist/**/*')
+  /* report through cli console the files that have been deleted
+    .then(paths => {
+      console.log('Deleted files and folders:\n', paths.join('\n'));
+    }
+  );
+  */
 });
 
 
-// javascript validator (not overly strict)
+// create a task for javascript validation
 gulp.task('lint', () => {
   return gulp.src(
     ['app/scripts/**/*.js', '!app/scripts/vendor/*.js'], {
@@ -88,7 +99,7 @@ gulp.task('lint', () => {
     .pipe(jshint.reporter('fail'));                                             // fail if we haven't done so
 });
 
-// start the javascript task pipeline
+// create a task for the javascript pipeline
 gulp.task('scripts', gulp.series('lint', () => {
   return gulp.src(['app/scripts/vendor/*.js', 'app/scripts/*.js'])
     .pipe(sourcemaps.init())
@@ -101,10 +112,11 @@ gulp.task('scripts', gulp.series('lint', () => {
     .pipe(bsync.stream());                                                      // will reload the browser and load the new version (javascript)
 }));
 
-// start the css task pipeline
+// create a task for the sass/css pipeline
 gulp.task('styles', () => {
-  return gulp.src('app/styles/main.scss')
+  return gulp.src(['app/styles/vendor/*.scss', 'app/styles/main.scss'])
     .pipe(sourcemaps.init())
+    .pipe(cached('styles'))
     .pipe(sass())
     .pipe(cssmin())
     .pipe(remember('styles'))
@@ -113,6 +125,7 @@ gulp.task('styles', () => {
     .pipe(bsync.stream());
 });
 
+// create a task for the html pipeline
 gulp.task('html', () => {
   return gulp.src('app/**/*.html')
     .pipe(newer('dist'))
@@ -120,22 +133,48 @@ gulp.task('html', () => {
     .pipe(bsync.stream());
 })
 
-// start a browsersync server listener
+// create a task for moving of images
+gulp.task('imgs', () => {
+  return gulp.src('app/**/*.png')
+    .pipe(newer('dist'))
+    .pipe(gulp.dest('dist'))
+    .pipe(bsync.stream());
+})
+
+// create a task for the browsersync real-time editing server
 gulp.task('server', (done) => {
   bsync({
+    baseDir: 'dist',
+    open: 'internal',
+    host: 'gulp-workshop.dev',
+    // proxy: 'gulp-workshop.dev',
     server: {
-      baseDir: ['dist']                                                         // will 404 if nothing found
-    }
-  });
+      baseDir: 'dist',
+      // directory: true                                                           // present a directory links (like windows)
+    },
+    port: 3000,
+    logSnippet: false
+  })
+  /* report out the resolve url to the cli interface
+
+  , (err, bs) => {
+    console.log(bs.options.getIn([
+      'urls',
+      'local'
+    ]));
+  }
+  */
   done();
 })
 
-// run a series of watchers for the default gulp task
+// inform gulp to run through a series of watchers for its default task
 gulp.task('default', gulp.series('clean',
-  gulp.parallel('html', 'styles', 'scripts'), 'server', (done) => {
+  gulp.parallel('imgs', 'html', 'styles', 'scripts'), 'server', (done) => {
     gulp.watch('app/styles/**.scss',  gulp.parallel('styles'));
+    gulp.watch('app/**/*.png',        gulp.parallel('imgs'));
     gulp.watch('app/**/*.html',       gulp.parallel('html'));
     gulp.watch('app/scripts/**.js',   gulp.parallel('lint', 'scripts'));
+    // gulp.watch();
     done();
   }
 ));

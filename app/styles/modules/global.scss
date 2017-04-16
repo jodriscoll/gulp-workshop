@@ -1,7 +1,7 @@
 body {
-  background-color: $bgColor;
-  background: url('https://www.toptal.com/designers/subtlepatterns/patterns/white_carbon.png') repeat top left $bgColor;
-  color: $fontColor;
+  background-color: $color__background-body;
+  background: url('/imgs/white_carbon.png') repeat top left $color__background-body;
+  color: $font__main--color;
   font-family: $font__main;
   padding: 30px 0 60px;
 }

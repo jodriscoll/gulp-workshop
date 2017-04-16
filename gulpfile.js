@@ -43,11 +43,24 @@
       during globbing
     - gulp-newer allows us to do incremental copies/builds on a per-file basis
 
+    - bundle.bundle emits a stream, but no vinyl file objects
+    - vinyl-source-stream wraps the original stream into a vinyl file object
+
   # preferred way of piping (large) javascript libraries
     1) filter files that have changed
     2) do performance heavy operations
     3) remember the old files
     4) and continue with the other ops
+
+  # what is browserify?
+    - Nifty tool for handling dependcies and packages inside client side
+      javascript. You can actually install modules with npm and front end modules
+      like jquery. Also, you can use the same const/require syntax as you would
+      with node.
+    - Browserify comes with a CLI but also comes with a streaming API – meaning,
+      gulp emits a stream and browserify emits a stream, so, both tools emit a
+      stream, but they both look different. Gulp emits virtual file objects in
+      a virtual file system, whereas browserify just emits the plain text.
 **/
 
 // constant requirements
@@ -63,28 +76,61 @@ const newer       = require('gulp-newer');
 const cached      = require('gulp-cached');
 const remember    = require('gulp-remember');
 const sourcemaps  = require('gulp-sourcemaps');
-
+const through2    = require('through2');
+const browserify  = require('browserify');
+const source      = require('vinyl-source-stream');
+const buffer      = require('vinyl-buffer')
 
 /*
   gulp default task and standard function through ECMA6
   gulp.task('default', () => {} );
-*/
 
-/*
   browsersync triggers
   bsync.reload   = reload the web app (.js, .html)
   bsync.stream   = stream in new versions of files (.img, .scss)
 */
 
+// create a boolean for development mode trigger
+var devMode = true;
+
+// create a function for the object passthrough
+function passthrough() {
+  return through2.obj();
+}
+
+// create a function testing the boolean and pass a return depending on result
+function isDev(fn) {
+  if(devMode) {
+    return fn;
+  } else {
+    return passthrough();
+  }
+}
+
+// create a variable for browserify main.js entry location
+var bundle = browserify({
+  entries: ['app/browserify/main.js']
+  /*
+    if using React, add the following:
+  , transform: [require('reactify')]
+
+    if using Babel
+  , transform: [require('babelify')]
+  */
+});
+
+// create a gulp task and manage a technology that isn't managed through Gulp
+gulp.task('browserify', () => {
+  return bundle.bundle()
+    .pipe(source('browserfied.js'))
+    .pipe(buffer())
+    .pipe(uglify())
+    .pipe(gulp.dest('dist/scripts'));
+});
+
 // create a new task that deletes directories/files
 gulp.task('clean', () => {
   return del('dist/**/*')
-  /* report through cli console the files that have been deleted
-    .then(paths => {
-      console.log('Deleted files and folders:\n', paths.join('\n'));
-    }
-  );
-  */
 });
 
 
@@ -94,33 +140,32 @@ gulp.task('lint', () => {
     ['app/scripts/**/*.js', '!app/scripts/vendor/*.js'], {
       since: gulp.lastRun('lint')
     })
-    .pipe(jshint())                                                             // jshint alters virtual file contents
-    .pipe(jshint.reporter('default'))                                           // report if we've wrote good/bad javascript
-    .pipe(jshint.reporter('fail'));                                             // fail if we haven't done so
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'))
+    .pipe(jshint.reporter('fail'));
 });
 
 // create a task for the javascript pipeline
 gulp.task('scripts', gulp.series('lint', () => {
   return gulp.src(['app/scripts/vendor/*.js', 'app/scripts/*.js'])
-    .pipe(sourcemaps.init())
+    .pipe(isDev(sourcemaps.init()))
     .pipe(cached('scripts'))
     .pipe(uglify())
     .pipe(remember('scripts'))
     .pipe(concat('main.min.js'))
-    .pipe(sourcemaps.write('.'))                                               // write the sourece map to the proceeding dest location
+    .pipe(isDev(sourcemaps.write('.')))
     .pipe(gulp.dest('dist/scripts'))
-    .pipe(bsync.stream());                                                      // will reload the browser and load the new version (javascript)
+    .pipe(bsync.stream());
 }));
 
 // create a task for the sass/css pipeline
 gulp.task('styles', () => {
   return gulp.src(['app/styles/vendor/*.scss', 'app/styles/main.scss'])
-    .pipe(sourcemaps.init())
-    .pipe(cached('styles'))
+    .pipe(isDev(sourcemaps.init()))
     .pipe(sass())
     .pipe(cssmin())
-    .pipe(remember('styles'))
     .pipe(concat('style.min.css'))
+    .pipe(isDev(sourcemaps.write('.')))
     .pipe(gulp.dest('dist/styles'))
     .pipe(bsync.stream());
 });
@@ -131,7 +176,7 @@ gulp.task('html', () => {
     .pipe(newer('dist'))
     .pipe(gulp.dest('dist'))
     .pipe(bsync.stream());
-})
+});
 
 // create a task for moving of images
 gulp.task('imgs', () => {
@@ -139,7 +184,7 @@ gulp.task('imgs', () => {
     .pipe(newer('dist'))
     .pipe(gulp.dest('dist'))
     .pipe(bsync.stream());
-})
+});
 
 // create a task for the browsersync real-time editing server
 gulp.task('server', (done) => {

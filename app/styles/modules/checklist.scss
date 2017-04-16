@@ -8,6 +8,10 @@ ul {
     border-bottom: 0;
     font-size: 16px;
     text-align: center;
+    &:first-of-type {
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
     &:last-of-type {
       border-bottom: 1px solid $color__border-elements;
     }
@@ -24,6 +28,7 @@ ul {
       border-left: 1px solid $color__border-elements;
       color: #006a98;
       display: inline-block;
+      font-weight: 300;
       height: 100%;
       padding: 30px 15px;
       text-align: left;
@@ -45,7 +50,9 @@ input[type='text'] {
   border-radius: 0 0 10px 10px;
   border-top: none;
   box-sizing: border-box;
-  float: right;
+  clear: both;
+  font-weight: 300;
+  float: left;
   outline: none;
   padding: 12px;
   width: 100%;

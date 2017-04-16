@@ -3,9 +3,9 @@ Workshop using ECMA6 and Node.js to create a self contained build environment so
 
 Installation
 ------------
-1. Fork the repository https://github.com/jodriscoll/gulp-workshop
+1. Fork the repository: https://github.com/jodriscoll/gulp-workshop
 
-2. Change directory into a `sandbox/` directory, clone the forked repository, then configure a few git stream parameters
+2. Change directory into a `sandbox/` directory, clone your forked repository, then configure a few git stream parameters
 ```bash
 composer self-update
 $ sandbox

@@ -1,11 +1,11 @@
 # gulp-workshop
-Gulp workshop using ECMA6 and Node.js
+Workshop using ECMA6 and Node.js to create a self contained build environment solely running through Gulps.js.
 
 Installation
 ------------
 1. Fork the repository https://github.com/jodriscoll/gulp-workshop
-2. `cd` into a `sandbox/` directory, clone the forked repository, then configure a few parameters
 
+2. `cd` into a `sandbox/` directory, clone the forked repository, then configure a few parameters
 ```bash
 composer self-update
 $ sandbox
@@ -14,14 +14,8 @@ $ cd gulp-workshop/
 $ git remote add upstream git@github.com:jodriscoll/gulp-workshop.git
 $ git remote set-url upstream --push no-pushing
 ```
-3. Set permissions
-```bash
-$ sandbox
-$ cd gulp-workshop/
-$ chown -R apache:apache .
-$ chmod -R 775 dist/
-```
-4. Run `Gulp.js`
+
+3. Run **Gulp.js**
 ```bash
 $ sandbox
 $ cd gulp-workshop/

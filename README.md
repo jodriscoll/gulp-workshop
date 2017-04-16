@@ -21,3 +21,9 @@ $ cd gulp-workshop/
 $ chown -R apache:apache .
 $ chmod -R 775 dist/
 ```
+4. Run `Gulp.js`
+```bash
+$ sandbox
+$ cd gulp-workshop/
+$ gulp
+```

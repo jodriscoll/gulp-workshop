@@ -5,7 +5,7 @@ Installation
 ------------
 1. Fork the repository https://github.com/jodriscoll/gulp-workshop
 
-2. `cd` into a `sandbox/` directory, clone the forked repository, then configure a few parameters
+2. Change directory into a `sandbox/` directory, clone the forked repository, then configure a few git stream parameters
 ```bash
 composer self-update
 $ sandbox

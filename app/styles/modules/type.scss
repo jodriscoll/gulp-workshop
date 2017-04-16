@@ -7,6 +7,7 @@ pre {
   background: $color__background-pre;
   border: 1px solid $color__border-elements;
   border-radius: 5px;
+  color: #006a98;
   font-family: $font__pre;
   font-size: 11px;
   margin-bottom: 1.6em;
@@ -14,6 +15,7 @@ pre {
   max-width: 100%;
   overflow: auto;
   padding: 1.6em;
+  -webkit-font-smoothing: none;
 }
 
 code, kbd, tt, var {

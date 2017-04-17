@@ -45,6 +45,9 @@
 
     - bundle.bundle emits a stream, but no vinyl file objects
     - vinyl-source-stream wraps the original stream into a vinyl file object
+    - viny-buffer converts the stream contents to a buffer for plugins who need
+      a buffer (such as uglify())
+    -
 
   # preferred way of piping (large) javascript libraries
     1) filter files that have changed
@@ -79,7 +82,7 @@ const sourcemaps  = require('gulp-sourcemaps');
 const through2    = require('through2');
 const browserify  = require('browserify');
 const source      = require('vinyl-source-stream');
-const buffer      = require('vinyl-buffer')
+const buffer      = require('vinyl-buffer');
 
 /*
   gulp default task and standard function through ECMA6
@@ -110,13 +113,6 @@ function isDev(fn) {
 // create a variable for browserify main.js entry location
 var bundle = browserify({
   entries: ['app/browserify/main.js']
-  /*
-    if using React, add the following:
-  , transform: [require('reactify')]
-
-    if using Babel
-  , transform: [require('babelify')]
-  */
 });
 
 // create a gulp task and manage a technology that isn't managed through Gulp
@@ -132,7 +128,6 @@ gulp.task('browserify', () => {
 gulp.task('clean', () => {
   return del('dist/**/*')
 });
-
 
 // create a task for javascript validation
 gulp.task('lint', () => {
@@ -197,18 +192,9 @@ gulp.task('server', (done) => {
       baseDir: 'dist',
       // directory: true                                                           // present a directory links (like windows)
     },
-    port: 3000,
+    port: 1234,
     logSnippet: false
   })
-  /* report out the resolve url to the cli interface
-
-  , (err, bs) => {
-    console.log(bs.options.getIn([
-      'urls',
-      'local'
-    ]));
-  }
-  */
   done();
 })
 

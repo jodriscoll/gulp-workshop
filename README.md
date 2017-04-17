@@ -7,7 +7,6 @@ Requirements
 2. Gulp.js 4.0
 3. ECMA6/JavaScript comfort
 4. Familiar with setting up vhosts on your machine
-5. 
 
 Installation
 ------------

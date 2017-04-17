@@ -1,6 +1,14 @@
 # gulp-workshop
 Workshop using ECMA6 and Node.js to create a self contained build environment solely running through Gulps.js.
 
+Requirements
+------------
+1. Node.js
+2. Gulp.js 4.0
+3. ECMA6/JavaScript comfort
+4. Familiar with setting up vhosts on your machine
+5. 
+
 Installation
 ------------
 1. **Fork** the repository: https://github.com/jodriscoll/gulp-workshop

@@ -3,7 +3,7 @@ Workshop using ECMA6 and Node.js to create a self contained build environment so
 
 Requirements
 ------------
-1. Node.js (npm responding to -v)
+1. Node.js (`npm` responding to `-v`)
 2. Gulp.js (4.0)
 3. ECMA6/JavaScript comfort
 4. Familiar with setting up bash shortcuts (ex: `sandbox`)

@@ -83,6 +83,7 @@ const through2    = require('through2');
 const browserify  = require('browserify');
 const source      = require('vinyl-source-stream');
 const buffer      = require('vinyl-buffer');
+const tinify      = require('gulp-tinify');                                     // requires an API key for tinypng.com/developers
 
 /*
   gulp default task and standard function through ECMA6
@@ -173,10 +174,11 @@ gulp.task('html', () => {
     .pipe(bsync.stream());
 });
 
-// create a task for moving of images
+// create a task for handling images
 gulp.task('imgs', () => {
-  return gulp.src('app/**/*.png')
+  return gulp.src('app/**/*.{png,gif,jpg}')
     .pipe(newer('dist'))
+    .pipe(tinify('YOUR_API_KEY'))
     .pipe(gulp.dest('dist'))
     .pipe(bsync.stream());
 });
@@ -190,9 +192,8 @@ gulp.task('server', (done) => {
     // proxy: 'gulp-workshop.dev',
     server: {
       baseDir: 'dist',
-      // directory: true                                                           // present a directory links (like windows)
     },
-    port: 1234,
+    port: 3000,
     logSnippet: false
   })
   done();
@@ -205,7 +206,6 @@ gulp.task('default', gulp.series('clean',
     gulp.watch('app/**/*.png',        gulp.parallel('imgs'));
     gulp.watch('app/**/*.html',       gulp.parallel('html'));
     gulp.watch('app/scripts/**.js',   gulp.parallel('lint', 'scripts'));
-    // gulp.watch();
     done();
   }
 ));

@@ -27,6 +27,7 @@
     "gulp-remember": "^0.3.0",
     "gulp-sass": "^2.1.0",
     "gulp-sourcemaps": "^2.6.0",
+    "gulp-tinify": "^1.0.2",
     "gulp-uglify": "^1.4.2",
     "through2": "^2.0.3",
     "vinyl-buffer": "^1.0.0",

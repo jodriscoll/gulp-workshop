@@ -185,18 +185,18 @@ gulp.task('imgs', () => {
 
 // create a task for the browsersync real-time editing server
 gulp.task('server', (done) => {
+  var loc = 'vhost-location.dev';
   bsync({
-    baseDir: 'dist',
-    open: 'internal',
-    host: 'gulp-workshop.dev',
-    // proxy: 'gulp-workshop.dev',
-    server: {
-      baseDir: 'dist',
-    },
+    // step 4: allow it to be accessible throughout
+    open: 'external',
+    // step 3: leverage the preexisting vhosts for population
+    host: loc,
+    // step 2: port the results through port :80
+    proxy: loc + ':80',
+    // step 1: listen on port 8000
     port: 3000,
     logSnippet: false
   })
-  done();
 })
 
 // inform gulp to run through a series of watchers for its default task

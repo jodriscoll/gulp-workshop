@@ -17,7 +17,7 @@ Installation
 2. **Change directory** into a `sandbox/` directory, **clone** your forked repository, then **define** your git upstream parameters
 ```bash
 $ sandbox
-$ git clone git@github.com:YOUR-USERNAME/gulp-workshop.git
+$ git clone git@github.com:{YOUR-USERNAME}/gulp-workshop.git
 $ cd gulp-workshop/
 $ git remote add upstream git@github.com:jodriscoll/gulp-workshop.git
 $ git remote set-url upstream --push no-pushing

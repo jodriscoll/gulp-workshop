@@ -7,7 +7,8 @@ Requirements
 2. Gulp.js 4.0
 3. ECMA6/JavaScript comfort
 4. Familiar with setting up bash shortcuts (ex: `sandbox`)
-4. Familiar with setting up vhosts to reference
+5. Familiar with setting up vhosts to reference
+6. API Key for TinyPNG image compression (Free – tinypng.com/developers)
 
 Installation
 ------------

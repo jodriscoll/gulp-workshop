@@ -176,7 +176,7 @@ gulp.task('html', () => {
 
 // create a task for handling images
 gulp.task('imgs', () => {
-  return gulp.src('app/**/*.{png,gif,jpg}')
+  return gulp.src('app/**/*.{png,gif,jpg,svg}')
     .pipe(newer('dist'))
     .pipe(tinify('YOUR_API_KEY'))
     .pipe(gulp.dest('dist'))
@@ -202,10 +202,10 @@ gulp.task('server', (done) => {
 // inform gulp to run through a series of watchers for its default task
 gulp.task('default', gulp.series('clean',
   gulp.parallel('imgs', 'html', 'styles', 'scripts'), 'server', (done) => {
-    gulp.watch('app/styles/**.scss',  gulp.parallel('styles'));
-    gulp.watch('app/**/*.png',        gulp.parallel('imgs'));
-    gulp.watch('app/**/*.html',       gulp.parallel('html'));
-    gulp.watch('app/scripts/**.js',   gulp.parallel('lint', 'scripts'));
+    gulp.watch('app/styles/**.scss',          gulp.parallel('styles'));
+    gulp.watch('app/**/*.{png,gif,jpg,svg}',  gulp.parallel('imgs'));
+    gulp.watch('app/**/*.html',               gulp.parallel('html'));
+    gulp.watch('app/scripts/**.js',           gulp.parallel('lint', 'scripts'));
     done();
   }
 ));

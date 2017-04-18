@@ -23,7 +23,14 @@ $ git remote add upstream git@github.com:jodriscoll/gulp-workshop.git
 $ git remote set-url upstream --push no-pushing
 ```
 
-3. Run **Gulp.js**
+3. Install **Node** modules through **npm**
+```bash
+$ sandbox
+$ cd gulp-workshop/
+$ npm install
+```
+
+4. Run **Gulp.js**
 ```bash
 $ sandbox
 $ cd gulp-workshop/

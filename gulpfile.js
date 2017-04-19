@@ -107,8 +107,8 @@ const util              = require('gulp-util');
   $ gulp --production = will return 'true'
 
   After configuration, execute the following through CLI to handle sourcemaps
-  $ gulp              = sourcemaps WILL NOT be generated
-  $ gulp --production = sourcemaps WILL be generated
+  $ gulp              = sourcemaps WILL be generated
+  $ gulp --production = sourcemaps WILL NOT be generated
 
 */
 
@@ -186,13 +186,11 @@ gulp.task('browserify', () => {
     .pipe(source('browserfied.js'))
     .pipe(buffer())
     .pipe(uglify())
-    // .pipe(gulp.dest('dist/scripts'));
     .pipe(gulp.dest(paths.dist.scripts));
 });
 
 // create a new task that deletes directories/files
 gulp.task('clean', () => {
-  // return del('dist/**/*')
   return del(paths.dist.clean)
 });
 

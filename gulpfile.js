@@ -13,7 +13,7 @@
     Why? Gulp composition is simple. You can read and write a configuration file
     with little experience into ECMA6 or JavaScript experience. It also, with
     some "light" massaging works with both docker images and dev containers
-    without the infamous "gulp remotes false issues when working remote" issue.
+    without the infamous "gulp reports false issues when working remote" issue.
     And, I personally think you can acheive anything you can with the other
     build tools using gulp.
 

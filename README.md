@@ -3,8 +3,8 @@ Workshop using ECMA6 and Node.js to create a self contained build environment so
 
 Requirements
 ------------
-1. Node.js
-2. Gulp.js 4.0
+1. Node.js (`npm` responding to `-v`)
+2. Gulp.js (4.0)
 3. ECMA6/JavaScript comfort
 4. Familiar with setting up bash shortcuts (ex: `sandbox`)
 5. Familiar with setting up vhosts to reference
@@ -23,7 +23,14 @@ $ git remote add upstream git@github.com:jodriscoll/gulp-workshop.git
 $ git remote set-url upstream --push no-pushing
 ```
 
-3. Run **Gulp.js**
+3. Install **Node** modules through **npm**
+```bash
+$ sandbox
+$ cd gulp-workshop/
+$ npm install
+```
+
+4. Run **Gulp.js**
 ```bash
 $ sandbox
 $ cd gulp-workshop/

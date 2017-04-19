@@ -67,35 +67,99 @@
 **/
 
 // constant requirements
-const gulp        = require('gulp');
-const uglify      = require('gulp-uglify');
-const concat      = require('gulp-concat');
-const sass        = require('gulp-sass');
-const cssmin      = require('gulp-clean-css');
-const jshint      = require('gulp-jshint');
-const del         = require('del');
-const bsync       = require('browser-sync');
-const newer       = require('gulp-newer');
-const cached      = require('gulp-cached');
-const remember    = require('gulp-remember');
-const sourcemaps  = require('gulp-sourcemaps');
-const through2    = require('through2');
-const browserify  = require('browserify');
-const source      = require('vinyl-source-stream');
-const buffer      = require('vinyl-buffer');
-const tinify      = require('gulp-tinify');                                     // requires an API key for tinypng.com/developers
+const gulp              = require('gulp');
+const uglify            = require('gulp-uglify');
+const concat            = require('gulp-concat');
+const sass              = require('gulp-sass');
+const cssmin            = require('gulp-clean-css');
+const jshint            = require('gulp-jshint');
+const jsstyle           = require('jshint-stylish');
+const del               = require('del');
+const bsync             = require('browser-sync');
+const newer             = require('gulp-newer');
+const cached            = require('gulp-cached');
+const remember          = require('gulp-remember');
+const sourcemaps        = require('gulp-sourcemaps');
+const through2          = require('through2');
+const browserify        = require('browserify');
+const source            = require('vinyl-source-stream');
+const buffer            = require('vinyl-buffer');
+const tinify            = require('gulp-tinify');                               // *** requires an API key for tinypng.com/developers ***
+const util              = require('gulp-util');
 
 /*
   gulp default task and standard function through ECMA6
+  ============================================================================
   gulp.task('default', () => {} );
 
   browsersync triggers
-  bsync.reload   = reload the web app (.js, .html)
-  bsync.stream   = stream in new versions of files (.img, .scss)
+  ============================================================================
+  bsync.reload        = reload the web app (.js, .html)
+  bsync.stream        = stream in new versions of files (.img, .scss)
+
+  gulp flag utility
+  ============================================================================
+  Add the following line to your gulpfile to test gulp-util flag output:
+  console.log(util.env.production);
+
+  Open CLI and run the following:
+  $ gulp              = will return 'undefined'
+  $ gulp --production = will return 'true'
+
+  After configuration, execute the following through CLI to handle sourcemaps
+  $ gulp              = sourcemaps WILL NOT be generated
+  $ gulp --production = sourcemaps WILL be generated
+
 */
 
 // create a boolean for development mode trigger
 var devMode = true;
+
+// define shorthand configuration variables
+var config = {
+  vhost:      {
+    src:        'gulp-workshop.dev',
+    route:      ':80',
+    listener:   8000
+  },
+  production:   !!util.env.production,
+  tinypng: {
+    APIKEY:     'null'
+  }
+}
+
+// define shorthand pathing variable references
+var paths = {
+  app:  {
+    src:        'app/',
+    styles:     'app/styles/',
+    scripts:    'app/scripts/',
+    images:     'app/imgs/',
+  },
+  dist:  {
+    src:        'dist/',
+    styles:     'dist/styles/',
+    scripts:    'dist/scripts/',
+    images:     'dist/imgs/',
+    clean:      'dist/**/*'
+  },
+  src: {
+    styles:     'app/styles/main.scss',
+    scripts:    'app/scripts/*.js',
+    images:     'app/**/*.{png,gif,jpg,svg}',
+    html:       'app/**/*.html',
+    vendor: {
+      styles:   'app/styles/vendor/*.scss',
+      scripts:  'app/scripts/vendor/*.js'
+    }
+  },
+  watch: {
+    styles:     'app/styles/**/*.scss',
+    scripts:    'app/scripts/**.js',
+    images:     'app/**/*.{png,gif,jpg,svg}',
+    html:       'app/**/*.html'
+  }
+}
 
 // create a function for the object passthrough
 function passthrough() {
@@ -122,12 +186,14 @@ gulp.task('browserify', () => {
     .pipe(source('browserfied.js'))
     .pipe(buffer())
     .pipe(uglify())
-    .pipe(gulp.dest('dist/scripts'));
+    // .pipe(gulp.dest('dist/scripts'));
+    .pipe(gulp.dest(paths.dist.scripts));
 });
 
 // create a new task that deletes directories/files
 gulp.task('clean', () => {
-  return del('dist/**/*')
+  // return del('dist/**/*')
+  return del(paths.dist.clean)
 });
 
 // create a task for javascript validation
@@ -138,72 +204,75 @@ gulp.task('lint', () => {
     })
     .pipe(jshint())
     .pipe(jshint.reporter('default'))
-    .pipe(jshint.reporter('fail'));
+    .pipe(jshint.reporter('jshint-stylish', {beep: true}))
 });
 
 // create a task for the javascript pipeline
 gulp.task('scripts', gulp.series('lint', () => {
-  return gulp.src(['app/scripts/vendor/*.js', 'app/scripts/*.js'])
+  return gulp.src([paths.src.vendor.scripts, paths.src.scripts])
     .pipe(isDev(sourcemaps.init()))
     .pipe(cached('scripts'))
     .pipe(uglify())
     .pipe(remember('scripts'))
     .pipe(concat('main.min.js'))
-    .pipe(isDev(sourcemaps.write('.')))
-    .pipe(gulp.dest('dist/scripts'))
+    .pipe(config.production ? util.noop() : (sourcemaps.write('.')))
+    .pipe(gulp.dest(paths.dist.scripts))
     .pipe(bsync.stream());
 }));
 
 // create a task for the sass/css pipeline
 gulp.task('styles', () => {
-  return gulp.src(['app/styles/vendor/*.scss', 'app/styles/main.scss'])
+  return gulp.src([paths.src.vendor.styles, paths.src.styles])
     .pipe(isDev(sourcemaps.init()))
     .pipe(sass())
     .pipe(cssmin())
     .pipe(concat('style.min.css'))
-    .pipe(isDev(sourcemaps.write('.')))
-    .pipe(gulp.dest('dist/styles'))
+    .pipe(config.production ? util.noop() : (sourcemaps.write('.')))
+    .pipe(gulp.dest(paths.dist.styles))
     .pipe(bsync.stream());
 });
 
 // create a task for the html pipeline
 gulp.task('html', () => {
-  return gulp.src('app/**/*.html')
-    .pipe(newer('dist'))
-    .pipe(gulp.dest('dist'))
+  return gulp.src(paths.src.html)
+    .pipe(newer(paths.dist.src))
+    .pipe(gulp.dest(paths.dist.src))
     .pipe(bsync.stream());
 });
 
 // create a task for handling images
 gulp.task('imgs', () => {
-  return gulp.src('app/**/*.{png,gif,jpg,svg}')
-    .pipe(newer('dist'))
-    .pipe(tinify('YOUR_API_KEY'))
-    .pipe(gulp.dest('dist'))
+  return gulp.src(paths.src.images)
+    .pipe(newer(paths.dist.src))
+    .pipe(tinify(config.tinypng.APIKEY))
+    .pipe(gulp.dest(paths.dist.src))
     .pipe(bsync.stream());
 });
 
 // create a task for the browsersync real-time editing server
 gulp.task('server', (done) => {
-  var loc = 'vhost-location.dev';
-  
   bsync({
-    open: 'external',
-    host: loc,
-    proxy: loc + ':80',
-    port: 8000,
-    // ui: false,
+    baseDir: paths.dist.src,
+    open: 'false',
+    host: config.vhost.src,
+    proxy: {
+      target: config.vhost.src + config.vhost.route,
+      ws: true
+    },
+    port: config.vhost.listener,
+    // ui: true,
     logSnippet: false
   })
+  done();
 })
 
 // inform gulp to run through a series of watchers for its default task
 gulp.task('default', gulp.series('clean',
   gulp.parallel('imgs', 'html', 'styles', 'scripts'), 'server', (done) => {
-    gulp.watch('app/styles/**/*.scss',        gulp.parallel('styles'));
-    gulp.watch('app/**/*.{png,gif,jpg,svg}',  gulp.parallel('imgs'));
-    gulp.watch('app/**/*.html',               gulp.parallel('html'));
-    gulp.watch('app/scripts/**.js',           gulp.parallel('lint', 'scripts'));
+    gulp.watch(paths.watch.styles,            gulp.parallel('styles'));
+    gulp.watch(paths.watch.images,            gulp.parallel('imgs'));
+    gulp.watch(paths.watch.html,              gulp.parallel('html'));
+    gulp.watch(paths.watch.scripts,           gulp.parallel('lint', 'scripts'));
     done();
   }
 ));

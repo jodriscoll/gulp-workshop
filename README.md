@@ -14,7 +14,7 @@ Installation
 ------------
 1. **Fork** the repository: https://github.com/jodriscoll/gulp-workshop
 
-2. **Change directory** into a `sandbox/` directory, **clone** your forked repository, then **define** your git upstream parameters
+2. **Change directory** into a `sandbox/` directory, **clone** your forked repository, then **define** your git stream parameters
 ```bash
 $ git clone git@github.com:{YOUR-USERNAME}/gulp-workshop.git
 $ cd gulp-workshop/
